@@ -1,0 +1,11 @@
+year:
+
+select count(*) from haul where to_char(GMT_DATE_TIME, 'YYYY') = 2011;
+
+month:
+
+select count(*) from haul where to_char(GMT_DATE_TIME, 'MM') = 11;
+
+Day:
+
+select count(*) from haul where to_char(GMT_DATE_TIME, 'DD') = 11;
