@@ -63,21 +63,21 @@ execute immediate sql1;
 
 			ELSIF i = 1
 			THEN
-			ph_number := ph_number + previous_value_array.CHLOROCONC_L * (chlorValue.sample_depth - previous_value_array.sample_depth)/2;
-			chl_number := chl_number + + previous_value_array.PHAECONC_L * (chlorValue.sample_depth - previous_value_array.sample_depth)/2;
+			chl_number := chl_number + previous_value_array.CHLOROCONC_L * (chlorValue.sample_depth - previous_value_array.sample_depth)/2;
+			ph_number := ph_number + + previous_value_array.PHAECONC_L * (chlorValue.sample_depth - previous_value_array.sample_depth)/2;
 			/* last depth value*/
 			ELSIF i = v_count
 			THEN
-			ph_number := ph_number + previous_value_array.CHLOROCONC_L * (chlorValue.sample_depth - previous_value_array.sample_depth);
-			chl_number := chl_number + + previous_value_array.PHAECONC_L * (chlorValue.sample_depth - previous_value_array.sample_depth);
+			chl_number := chl_number + previous_value_array.CHLOROCONC_L * (chlorValue.sample_depth - previous_value_array.sample_depth);
+			ph_number := ph_number + + previous_value_array.PHAECONC_L * (chlorValue.sample_depth - previous_value_array.sample_depth);
 			
-			ph_number := ph_number + chlorValue.CHLOROCONC_L * (chlorValue.sample_depth - previous_value_array.sample_depth)/2;
-			chl_number := chl_number + + chlorValue.PHAECONC_L * (chlorValue.sample_depth - previous_value_array.sample_depth)/2;
+			chl_number := chl_number + chlorValue.CHLOROCONC_L * (chlorValue.sample_depth - previous_value_array.sample_depth)/2;
+			ph_number := ph_number + + chlorValue.PHAECONC_L * (chlorValue.sample_depth - previous_value_array.sample_depth)/2;
 			
 			/* all other values*/
 			ELSE
-			ph_number := ph_number + previous_value_array.CHLOROCONC_L * (chlorValue.sample_depth - previous_value_array.sample_depth);
-			chl_number := chl_number + + previous_value_array.PHAECONC_L * (chlorValue.sample_depth - previous_value_array.sample_depth);
+			chl_number := chl_number + previous_value_array.CHLOROCONC_L * (chlorValue.sample_depth - previous_value_array.sample_depth);
+			ph_number := ph_number + + previous_value_array.PHAECONC_L * (chlorValue.sample_depth - previous_value_array.sample_depth);
 
 			END IF;
 
