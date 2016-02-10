@@ -491,8 +491,8 @@ END is_number;
 
 	  update specimen_main_geom set DIS_PERVOLM3 = ROUND(to_number(VOLUME_DISPLACEMENT)/volume_filtered,4) where volume_filtered > 0 and to_number(VOLUME_DISPLACEMENT) > 0 and volume_filtered is not null and VOLUME_DISPLACEMENT is not null;
     update specimen_main_geom set DIS_PERVOLM2 = ROUND(DIS_PERVOLM3*(MAX_GEAR_DEPTH -MIN_GEAR_DEPTH),4) where volume_filtered > 0 and to_number(VOLUME_DISPLACEMENT) > 0;
-    update specimen_main_geom set DIS_PERVOLM3 = null where volume_filtered <= 0 || to_number(VOLUME_DISPLACEMENT) <= 0 || volume_filtered IS NULL || VOLUME_DISPLACEMENT IS NULL;
-    update specimen_main_geom set DIS_PERVOLM2 = null where volume_filtered <= 0 || to_number(VOLUME_DISPLACEMENT) <=0 || volume_filtered IS NULL || VOLUME_DISPLACEMENT IS NULL;
+    update specimen_main_geom set DIS_PERVOLM3 = null where volume_filtered <= 0 OR to_number(VOLUME_DISPLACEMENT) <= 0 OR volume_filtered IS NULL OR VOLUME_DISPLACEMENT IS NULL;
+    update specimen_main_geom set DIS_PERVOLM2 = null where volume_filtered <= 0 OR to_number(VOLUME_DISPLACEMENT) <=0 OR volume_filtered IS NULL OR VOLUME_DISPLACEMENT IS NULL;
  
  commit;
 
