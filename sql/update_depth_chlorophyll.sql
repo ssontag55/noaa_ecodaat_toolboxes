@@ -1,4 +1,4 @@
-/* Integrated Depth Caluclations
+/* Integrated Depth Calculations
 ASA and NOAA
 To Be run on the Chlorphyll table after table is updated
 */
@@ -35,13 +35,14 @@ i := 0;
 ph_number := 0;
 chl_number := 0;
 
-sql1 := 'create view t'||haul.h_id||' as (select * from chlorophyll_data where h_id = '||haul.h_id||')';
 sql2 := 'drop view t'||haul.h_id;
+sql1 := 'create view t'||haul.h_id||' as (select * from chlorophyll_data where h_id = '||haul.h_id||')';
 
-dbms_output.put_line(sql1);
+/* dbms_output.put_line(sql1);
+dbms_output.put_line(sql2);
 
-/* Create View for each haul*/
-execute immediate sql1;
+Create View for each haul
+execute immediate sql1;*/
 
 	begin
 
@@ -63,21 +64,22 @@ execute immediate sql1;
 
 			ELSIF i = 1
 			THEN
-			chl_number := chl_number + previous_value_array.CHLOROCONC_L * (chlorValue.sample_depth - previous_value_array.sample_depth)/2;
-			ph_number := ph_number + + previous_value_array.PHAECONC_L * (chlorValue.sample_depth - previous_value_array.sample_depth)/2;
+			ph_number := ph_number +(chlorValue.PHAECONC_L + previous_value_array.PHAECONC_L) * ((chlorValue.sample_depth - previous_value_array.sample_depth)/2);
+			chl_number := chl_number +(chlorValue.CHLOROCONC_L + previous_value_array.CHLOROCONC_L) *((chlorValue.sample_depth - previous_value_array.sample_depth)/2);
 			/* last depth value*/
 			ELSIF i = v_count
 			THEN
-			chl_number := chl_number + previous_value_array.CHLOROCONC_L * (chlorValue.sample_depth - previous_value_array.sample_depth);
-			ph_number := ph_number + + previous_value_array.PHAECONC_L * (chlorValue.sample_depth - previous_value_array.sample_depth);
 			
-			chl_number := chl_number + chlorValue.CHLOROCONC_L * (chlorValue.sample_depth - previous_value_array.sample_depth)/2;
-			ph_number := ph_number + + chlorValue.PHAECONC_L * (chlorValue.sample_depth - previous_value_array.sample_depth)/2;
+			ph_number := ph_number +(chlorValue.PHAECONC_L + previous_value_array.PHAECONC_L) * ((chlorValue.sample_depth - previous_value_array.sample_depth)/2);
+			chl_number := chl_number +(chlorValue.CHLOROCONC_L + previous_value_array.CHLOROCONC_L) * ((chlorValue.sample_depth - previous_value_array.sample_depth)/2);
 			
-			/* all other values*/
+			/* 
+			ph_number := ph_number + previous_value_array.PHAECONC_L * ((chlorValue.sample_depth - previous_value_array.sample_depth));
+			chl_number := chl_number + previous_value_array.CHLOROCONC_L * ((chlorValue.sample_depth - previous_value_array.sample_depth));
+			all other values*/
 			ELSE
-			chl_number := chl_number + previous_value_array.CHLOROCONC_L * (chlorValue.sample_depth - previous_value_array.sample_depth);
-			ph_number := ph_number + + previous_value_array.PHAECONC_L * (chlorValue.sample_depth - previous_value_array.sample_depth);
+			ph_number := ph_number +(chlorValue.PHAECONC_L + previous_value_array.PHAECONC_L) * ((chlorValue.sample_depth - previous_value_array.sample_depth))/2;
+			chl_number := chl_number +(chlorValue.CHLOROCONC_L + previous_value_array.CHLOROCONC_L) * ((chlorValue.sample_depth - previous_value_array.sample_depth)/2);
 
 			END IF;
 
@@ -85,6 +87,7 @@ execute immediate sql1;
 			previous_value_array :=previous_value(chlorValue.sample_depth,chlorValue.PHAECONC_L,chlorValue.CHLOROCONC_L);
 			
 			dbms_output.put_line('Depth:'||previous_value_array.sample_depth||' Completed.');
+			dbms_output.put_line('chl_number:'||chl_number||' Completed.');
 
 		END LOOP;
 		
@@ -99,8 +102,10 @@ execute immediate sql1;
 		END IF;
 	end;
 
-/* Delete the view*/
+/* Delete the view
 execute immediate sql2;
+*/
+
 
 END LOOP;
 
