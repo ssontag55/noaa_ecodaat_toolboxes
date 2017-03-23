@@ -1,0 +1,13 @@
+SET SERVEROUTPUT ON
+SET ECHO ON
+DECLARE
+i   NUMBER := 0;
+begin
+for depthObj in (select * from vol_filtered_EST_NUM_PERM2 order by depth)
+loop
+i := i + 1;
+DBMS_OUTPUT.PUT_LINE(depthObj.depth);
+
+end loop;
+end;
+/

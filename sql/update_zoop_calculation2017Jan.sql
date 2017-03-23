@@ -69,7 +69,11 @@ BEGIN
     	/* Estimated number update*/
         IF r_company.volume_filtered > 0 and r_company.gear_name != 'CTDB' 
             THEN 
-            	update specimen set EST_NUM_PERM3 = ROUND(EST_NUM_PERSAMPLE/r_company.volume_filtered,4),EST_NUM_PERM2 = ROUND(EST_NUM_PERM3*(r_company.MAX_GEAR_DEPTH -r_company.MIN_GEAR_DEPTH),4) where specimen_id = r_company.specimen_id;
+            	/*update based on Kimberly 
+                update specimen set EST_NUM_PERM3 = ROUND(EST_NUM_PERSAMPLE/r_company.volume_filtered,4),EST_NUM_PERM2 = ROUND(EST_NUM_PERM3*(r_company.MAX_GEAR_DEPTH -r_company.MIN_GEAR_DEPTH),4) where specimen_id = r_company.specimen_id;
+                */
+                update specimen set EST_NUM_PERM3 = ROUND(EST_NUM_PERSAMPLE*(1000*(1/r_company.sample_volume)),4),EST_NUM_PERM2 = ROUND(EST_NUM_PERM3*(r_company.MAX_GEAR_DEPTH -r_company.MIN_GEAR_DEPTH),4) where specimen_id = r_company.specimen_id;
+                    
         
 	    ELSIF r_company.sample_volume > 0 and r_company.gear_name = 'CTDB'
         	THEN
@@ -91,7 +95,10 @@ BEGIN
                 /* all other depths  calculate the previous depths*/
                 ELSE
                 
+                /* based on Kimberly
                 EST_NUM_PERM2_number := EST_NUM_PERM2_number+ ROUND(EST_NUM_PERM3_value*(depthValue.depth -previous_depth),4);
+                */
+                EST_NUM_PERM2_number = (EST_NUM_PERM3 + EST_NUM_PERM3 of previous depth) * ((depthValue.depth - previous_depth)/2)
 
                 END IF;
                 

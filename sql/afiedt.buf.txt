@@ -1,0 +1,11 @@
+DECLARE
+begin
+FOR r_company IN (select * from vol_filtered)
+loop
+for depthValue in (select depth, specimen_id from vol_filtered_EST_NUM_PERM2 where h_id = r_company.h_id order by depth)
+loop
+DBMS_OUTPUT.PUT_LINE(depthValue.depth || depthValue.specimen_id);
+end loop;
+end loop;
+end;
+/
